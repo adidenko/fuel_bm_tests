@@ -396,6 +396,30 @@ def deploy_cluster(admin_node_ip, env_name):
     return result['message']
 
 ###################################
+def deploy_cluster_separately(admin_node_ip, env_name):
+  client = NailgunClient(admin_node_ip)
+  cluster_id = client.get_cluster_id(env_name)
+  env = load_env(env_name)
+
+  # separate provisioning, useful on virtual envs since provisioning runs much faster this way
+  cluster_nodes = client.list_cluster_nodes(cluster_id)
+  for cur_node in cluster_nodes:
+    task = client.provision_node(cluster_id, cur_node['id'])
+    result = task_wait(client, task, 3600, 60)
+    if result['status'] != 'ready':
+      return result['message']
+
+  # provisioning done, now lets deploy it
+  task = client.deploy_cluster_changes(cluster_id)
+  result = task_wait(client, task, env.deploy_timeout, 30)
+  if result['status'] == 'ready':
+    return "OK"
+  else:
+    return result['message']
+
+###################################
+
+###################################
 def run_action (name, admin_ip, env, mainlog, log):
 
   ###########
@@ -449,6 +473,18 @@ def run_action (name, admin_ip, env, mainlog, log):
       return False
 
   ###########
+  if name == "deploy_separately":
+
+    deploy_result = deploy_cluster_separately(admin_ip, env)
+
+    if deploy_result == "OK":
+      mainlog.info('%s environment deployment: OK', env)
+      return True
+    else:
+      mainlog.info('%s environment deployment: ERROR - %s', env, deploy_result)
+      return False
+
+  ###########
   if name == "ostf":
 
     ostf_result = run_ostf(admin_ip, env, log)
@@ -481,6 +517,7 @@ def main():
   parser.add_argument('action', type=str, help="Action we want to execute. Possible actions: {}".format(supported_actions))
   parser.add_argument("log", type=str, help="Logfile to store results in")
   parser.add_argument("-i", "--ignore-errors", help="Exit with 0 exit-code despite the errors we'v got", action="store_true")
+  parser.add_argument("-sp", "--separate-provisioning", help="Run provisioning on nodes one-by-one", action="store_true")
 
   args = parser.parse_args()
 
@@ -494,7 +531,11 @@ def main():
 
   # Run some action
   if args.action in supported_actions:
-    if run_action(args.action, admin_ip, env, mainlog, args.log):
+    if args.action == "deploy" and args.separate_provisioning:
+      action_to_run = "deploy_separately"
+    else:
+      action_to_run = args.action
+    if run_action(action_to_run, admin_ip, env, mainlog, args.log):
       sys.exit(0)
     elif args.ignore_errors:
       sys.exit(0)

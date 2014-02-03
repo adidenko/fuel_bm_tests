@@ -261,3 +261,13 @@ class NailgunClient(object):
     @json_parse
     def generate_logs(self):
         return self.client.put("/api/logs/package")
+
+    @logwrap
+    @json_parse
+    def provision_node(self, cluster_id, node_id):
+        return self.client.put(
+            "/api/clusters/{}/provision?nodes={}".format(
+                cluster_id, node_id
+            ),
+            data=""
+        )
