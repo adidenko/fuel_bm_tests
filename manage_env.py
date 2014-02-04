@@ -418,6 +418,43 @@ def deploy_cluster_separately(admin_node_ip, env_name):
     return result['message']
 
 ###################################
+def provision_cluster_separately(admin_node_ip, env_name):
+  client = NailgunClient(admin_node_ip)
+  cluster_id = client.get_cluster_id(env_name)
+  env = load_env(env_name)
+
+  # separate provisioning, useful on virtual envs since provisioning runs much faster this way
+  cluster_nodes = client.list_cluster_nodes(cluster_id)
+  for cur_node in cluster_nodes:
+    task = client.provision_node(cluster_id, cur_node['id'])
+    result = task_wait(client, task, 3600, 60)
+    if result['status'] != 'ready':
+      return result['message']
+
+  return "OK"
+
+###################################
+def provision_cluster(admin_node_ip, env_name):
+  client = NailgunClient(admin_node_ip)
+  cluster_id = client.get_cluster_id(env_name)
+  env = load_env(env_name)
+  all_nodes_ids = ""
+
+  # separate provisioning, useful on virtual envs since provisioning runs much faster this way
+  cluster_nodes = client.list_cluster_nodes(cluster_id)
+  for cur_node in cluster_nodes:
+    if all_nodes_ids == "":
+      all_nodes_ids = str(cur_node['id'])
+    else:
+      all_nodes_ids = all_nodes_ids + "," + str(cur_node['id'])
+
+  # provision all nodes
+  task = client.provision_node(cluster_id, all_nodes_ids)
+  result = task_wait(client, task, env.deploy_timeout, 30)
+  if result['status'] == 'ready':
+    return "OK"
+  else:
+    return result['message']
 
 ###################################
 def run_action (name, admin_ip, env, mainlog, log):
@@ -485,6 +522,30 @@ def run_action (name, admin_ip, env, mainlog, log):
       return False
 
   ###########
+  if name == "provision":
+
+    provision_result = provision_cluster(admin_ip, env)
+
+    if provision_result == "OK":
+      mainlog.info('%s environment provisioning: OK', env)
+      return True
+    else:
+      mainlog.info('%s environment provisioning: ERROR - %s', env, provision_result)
+      return False
+
+  ###########
+  if name == "provision_separately":
+
+    provision_result = provision_cluster_separately(admin_ip, env)
+
+    if provision_result == "OK":
+      mainlog.info('%s environment provisioning: OK', env)
+      return True
+    else:
+      mainlog.info('%s environment provisioning: ERROR - %s', env, provision_result)
+      return False
+
+  ###########
   if name == "ostf":
 
     ostf_result = run_ostf(admin_ip, env, log)
@@ -510,7 +571,7 @@ def run_action (name, admin_ip, env, mainlog, log):
 ###################################
 def main():
   # Parse args
-  supported_actions = [ "create", "remove", "netverify", "deploy", "ostf", "snapshot"]
+  supported_actions = [ "create", "remove", "netverify", "provision", "deploy", "ostf", "snapshot"]
   parser = argparse.ArgumentParser(description='Deploy OpenStack and run Fuel health check.')
   parser.add_argument("fuel_node", type=str, help="Fuel admin node IP")
   parser.add_argument('environment', type=str, help='Environment name we want to deploy and test')
@@ -533,8 +594,11 @@ def main():
   if args.action in supported_actions:
     if args.action == "deploy" and args.separate_provisioning:
       action_to_run = "deploy_separately"
+    elif args.action == "provision" and args.separate_provisioning:
+      action_to_run = "provision_separately"
     else:
       action_to_run = args.action
+
     if run_action(action_to_run, admin_ip, env, mainlog, args.log):
       sys.exit(0)
     elif args.ignore_errors:
