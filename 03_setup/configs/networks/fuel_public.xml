@@ -1,0 +1,9 @@
+<network>
+  <name>fuel_public</name>
+  <forward mode='nat'/>
+  <bridge name='virbr2' stp='on' delay='0' />
+  <mac address='52:54:00:07:B7:20'/>
+  <ip address='10.16.0.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+

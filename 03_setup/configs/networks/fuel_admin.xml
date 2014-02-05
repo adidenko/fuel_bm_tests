@@ -1,0 +1,8 @@
+<network>
+  <name>fuel_admin</name>
+  <forward mode='nat'/>
+  <bridge name='virbr1' stp='on' delay='0' />
+  <mac address='52:54:00:E6:61:E7'/>
+  <ip address='10.20.0.1' netmask='255.255.255.0'>
+  </ip>
+</network>

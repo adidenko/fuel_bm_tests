@@ -145,7 +145,7 @@ def make_snapshot (admin_node_ip):
     return result['message']
 
 ###################################
-def remove_env(admin_node_ip, env_name):
+def remove_env(admin_node_ip, env_name, dont_wait_for_nodes):
 
   client = NailgunClient(admin_node_ip)
   cluster_id = client.get_cluster_id(env_name)
@@ -172,12 +172,13 @@ def remove_env(admin_node_ip, env_name):
     return "Can't delete cluster"
 
   # wait for removed nodes to come back online
-  for i in range(90):
-    cur_nodes = client.list_nodes()
-    if len(cur_nodes) < len(all_nodes):
-      time.sleep(10)
+  if not dont_wait_for_nodes:
+    for i in range(90):
+      cur_nodes = client.list_nodes()
+      if len(cur_nodes) < len(all_nodes):
+        time.sleep(10)
 
-  if len(cur_nodes) < len(all_nodes):
+  if len(cur_nodes) < len(all_nodes) and not dont_wait_for_nodes:
     return "Timeout while waiting for removed nodes ({}) to come back up".format(len(cluster_nodes))
 
   return "OK"
@@ -457,7 +458,7 @@ def provision_cluster(admin_node_ip, env_name):
     return result['message']
 
 ###################################
-def run_action (name, admin_ip, env, mainlog, log):
+def run_action (name, admin_ip, env, mainlog, log, separate_provisioning = False, dont_wait = False):
 
   ###########
   if name == "create":
@@ -473,7 +474,7 @@ def run_action (name, admin_ip, env, mainlog, log):
   ###########
   if name == "remove":
 
-    remove_result = remove_env(admin_ip, env)
+    remove_result = remove_env(admin_ip, env, dont_wait)
 
     if remove_result[:2] == "OK":
       mainlog.info('%s environment removal: %s', env, remove_result)
@@ -500,19 +501,10 @@ def run_action (name, admin_ip, env, mainlog, log):
   ###########
   if name == "deploy":
 
-    deploy_result = deploy_cluster(admin_ip, env)
-
-    if deploy_result == "OK":
-      mainlog.info('%s environment deployment: OK', env)
-      return True
+    if separate_provisioning:
+      deploy_result = deploy_cluster_separately(admin_ip, env)
     else:
-      mainlog.info('%s environment deployment: ERROR - %s', env, deploy_result)
-      return False
-
-  ###########
-  if name == "deploy_separately":
-
-    deploy_result = deploy_cluster_separately(admin_ip, env)
+      deploy_result = deploy_cluster(admin_ip, env)
 
     if deploy_result == "OK":
       mainlog.info('%s environment deployment: OK', env)
@@ -524,19 +516,10 @@ def run_action (name, admin_ip, env, mainlog, log):
   ###########
   if name == "provision":
 
-    provision_result = provision_cluster(admin_ip, env)
-
-    if provision_result == "OK":
-      mainlog.info('%s environment provisioning: OK', env)
-      return True
+    if separate_provisioning:
+      provision_result = provision_cluster_separately(admin_ip, env)
     else:
-      mainlog.info('%s environment provisioning: ERROR - %s', env, provision_result)
-      return False
-
-  ###########
-  if name == "provision_separately":
-
-    provision_result = provision_cluster_separately(admin_ip, env)
+      provision_result = provision_cluster(admin_ip, env)
 
     if provision_result == "OK":
       mainlog.info('%s environment provisioning: OK', env)
@@ -579,6 +562,7 @@ def main():
   parser.add_argument("log", type=str, help="Logfile to store results in")
   parser.add_argument("-i", "--ignore-errors", help="Exit with 0 exit-code despite the errors we'v got", action="store_true")
   parser.add_argument("-sp", "--separate-provisioning", help="Run provisioning on nodes one-by-one", action="store_true")
+  parser.add_argument("-dw", "--dont-wait", help="Remove env and don't wait for nodes to come back up", action="store_true")
 
   args = parser.parse_args()
 
@@ -592,14 +576,7 @@ def main():
 
   # Run some action
   if args.action in supported_actions:
-    if args.action == "deploy" and args.separate_provisioning:
-      action_to_run = "deploy_separately"
-    elif args.action == "provision" and args.separate_provisioning:
-      action_to_run = "provision_separately"
-    else:
-      action_to_run = args.action
-
-    if run_action(action_to_run, admin_ip, env, mainlog, args.log):
+    if run_action(args.action, admin_ip, env, mainlog, args.log, separate_provisioning = args.separate_provisioning, dont_wait = args.dont_wait):
       sys.exit(0)
     elif args.ignore_errors:
       sys.exit(0)

@@ -1,0 +1,8 @@
+<network>
+  <name>fuel_private</name>
+  <bridge name='virbr5' stp='on' delay='0' />
+  <mac address='52:54:00:52:5D:C0'/>
+  <ip address='192.168.254.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+
