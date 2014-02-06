@@ -1,4 +1,8 @@
 #!/bin/bash
+# Usefull commands:
+# ubuntu:
+#	apt-get install libvirt-bin qemu-utils qemu-kvm
+#	wget http://launchpadlibrarian.net/92610410/python-ipaddr_2.1.10-1_all.deb && dpkg -i python-ipaddr_2.1.10-1_all.deb
 
 export PID=$$
 
