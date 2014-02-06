@@ -34,6 +34,11 @@ if [ "$rpl" == "Y" ] || [ "$rpl" == "y" ] ; then
 		echo "ERR: virsh not found"
 		exit 1
 	)
+	if [ ! -e "/var/tmp/iso/fuel.iso" ] ; then
+		echo "ERR: /var/tmp/iso/fuel.iso not found!"
+		echo "Please put a Fuel ISO (or a symlink) into /var/tmp/iso/fuel.iso and restart"
+		exit 1
+	fi
 
 	echo "==== Checking for network conflicts ===="
 	pushd networks &>/dev/null
@@ -81,5 +86,5 @@ if [ "$rpl" == "Y" ] || [ "$rpl" == "y" ] ; then
 		virsh create $i || error_exit
 	done
 	popd &>/dev/null
-	echo -e "\nDONE.\nPlease put Fuel ISO into /var/tmp/iso/fuel.iso and you're all set.\n"
+	echo -e "\nDONE.\n"
 fi
