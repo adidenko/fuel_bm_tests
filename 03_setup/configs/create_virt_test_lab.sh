@@ -8,11 +8,19 @@ else
     rpl="$1"
 fi
 
+if [ "$2" == "skip" ] ; then
+	export SKIP="true"
+else
+	export SKIP="false"
+fi
+
 error=""
 
 function error_exit {
-	echo -e "\nERR: Errors found. Exiting."
-	kill -s TERM $PID
+	if [ "$SKIP" == "false" ]; then
+		echo -e "\nERR: Errors found. Exiting."
+		kill -s TERM $PID
+	fi
 }
 
 if [ "$rpl" == "Y" ] || [ "$rpl" == "y" ] ; then
@@ -20,11 +28,11 @@ if [ "$rpl" == "Y" ] || [ "$rpl" == "y" ] ; then
 	echo "==== Basic check ===="
 	if [ ! -e /dev/kvm ] ; then
 		echo "ERR: /dev/kvm not found"
-		error_exit
+		exit 1
 	fi
 	virsh --version &>/dev/null || (
 		echo "ERR: virsh not found"
-		error_exit
+		exit 1
 	)
 
 	echo "==== Checking for network conflicts ===="
