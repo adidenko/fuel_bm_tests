@@ -334,7 +334,7 @@ def setup_env(admin_node_ip, env_name):
     for interface in interfaces:
       interface_name = interface['name']
       interface['assigned_networks'] = []
-      for allowed_network in interface['allowed_networks']:
+      for allowed_network in network_list:
         key_exists = interface_name in interfaces_dict
         if key_exists and \
         allowed_network['name'] \
