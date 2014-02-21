@@ -1,16 +1,15 @@
---- fuel_bmtests/ks.cfg	2014-01-19 16:38:30.000000000 -0500
-+++ ks_bmtests.cfg	2014-01-20 05:34:58.292095572 -0500
-@@ -48,7 +48,8 @@
-         echo
-         echo "Possible choices: ${drives}"
-         echo
--        read -p "Choose hard drive: " tgtdrive
-+#        read -p "Choose hard drive: " tgtdrive
-+	tgtdrive="sda"
-     done
-     clear
-     chvt 1
-@@ -214,6 +215,8 @@
+--- fuel_bmtests/ks.cfg	2014-02-21 05:13:56.000000000 -0500
++++ ks_bmtests.cfg	2014-02-21 06:28:13.572253957 -0500
+@@ -31,7 +31,7 @@
+ 
+ set ${drives}
+ numdrives=`echo $#`
+-tgtdrive="undefined"
++tgtdrive="sda"
+ if [ ${numdrives} -gt 1 ]; then
+     exec < /dev/tty3 > /dev/tty3 2>&1
+     chvt 3
+@@ -241,6 +241,8 @@
      fi
  }
  
@@ -19,7 +18,7 @@
  # Default FQDN
  hostname="nailgun.mirantis.com"
  
-@@ -305,6 +308,12 @@
+@@ -332,6 +334,12 @@
  chmod 0777 /usr/local/sbin/bootstrap_admin_node.sh
  cp ${SOURCE}/bootstrap_admin_node.conf /etc/init/bootstrap_admin_node.conf
  echo "ENABLED=1" > /etc/sysconfig/bootstrap_admin_node
@@ -32,7 +31,7 @@
  
  # Copying version.yaml file. It contains COMMIT_SHA of last commit.
  mkdir -p /etc/nailgun
-@@ -338,6 +347,8 @@
+@@ -365,6 +373,8 @@
  EOF
  
  echo "sed -i \"s%\(^.*able on:\).*$%\1 http://\`ip address show eth0 | awk '/inet / {print \$2}' | cut -d/ -f1 -\`:8000%\" /etc/issue" >>/etc/rc.local
@@ -41,7 +40,7 @@
  
  # Unmounting source
  umount -f ${SOURCE}
-@@ -374,4 +385,4 @@
+@@ -401,4 +411,4 @@
  # Blacklist i2c_piix4 module for VirtualBox so it does not create kernel errors
  [[ $(virt-what) = "virtualbox" ]] && echo "blacklist i2c_piix4" > /etc/modprobe.d/blacklist-i2c-piix4.conf
  
