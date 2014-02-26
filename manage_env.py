@@ -331,6 +331,20 @@ def setup_env(admin_node_ip, env_name):
     node_id = node['id']
     interfaces_dict = env.interfaces
     interfaces = client.get_node_interfaces(node_id)
+    if env.bond_slaves:
+      for bond in env.bond_slaves:
+        tmpbond = {}
+        tmpbond["assigned_networks"] = []
+        #tmpbond["mac"] = None
+        tmpbond["mode"] = env.bond_mode[bond]
+        tmpbond["name"] = bond
+        #tmpbond["state"] = None
+        tmpbond["type"] = "bond"
+        tmpbond["slaves"] = env.bond_slaves[bond]
+        interfaces.append(tmpbond)
+      client.put_node_interfaces(node_id, interfaces)
+
+    interfaces = client.get_node_interfaces(node_id)
     for interface in interfaces:
       interface_name = interface['name']
       interface['assigned_networks'] = []
@@ -341,8 +355,7 @@ def setup_env(admin_node_ip, env_name):
         in interfaces_dict[interface_name]:
           interface['assigned_networks'].append(allowed_network)
 
-    client.put_node_interfaces(
-      [{'id': node_id, 'interfaces': interfaces}])
+    client.put_node_interfaces(node_id, interfaces)
   return "OK"
 
 ###################################
