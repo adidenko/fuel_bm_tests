@@ -4,6 +4,7 @@ fuel_bm_tests
 Requirements
 ------------
 manage_env.py:
+* python 2.7+
 * python modules: ipaddr, sys, os, re, logging, time, argparse
 
 bm_tests.sh:

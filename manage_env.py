@@ -255,9 +255,12 @@ def setup_env(admin_node_ip, env_name):
       if env.settings["net_segment_type"] == 'vlan' and 'neutron_vlan_range' in env.settings:
         network_conf['neutron_parameters']['L2']['phys_nets']['physnet2']['vlan_range'] = env.settings['neutron_vlan_range']
       # check and update networks CIDR/netmask/size/etc
-      if 'net04' in env.net_cidr:
-        network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['cidr'] = env.net_cidr['net04']
-        network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['gateway'] = str(list(IPNetwork(env.net_cidr['net04']))[1])
+      if 'private' in env.net_cidr:
+        network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['cidr'] = env.net_cidr['private']
+        network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['gateway'] = str(list(IPNetwork(env.net_cidr['private']))[1])
+      if env.nameservers:
+        if 'private' in env.nameservers:
+          network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['nameservers'] = env.nameservers['private']
       if 'public' in env.net_cidr:
         network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['cidr'] = env.net_cidr['public']
         if env.gateway:

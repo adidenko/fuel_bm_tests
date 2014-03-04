@@ -1,6 +1,6 @@
 class environment:
       data = {
-        "release": 3,
+        "release": 2,
         "mode": "multinode"
       }
       interfaces = {
@@ -34,7 +34,8 @@ class environment:
       ostf_test_sets = ['smoke', 'sanity', 'platform_tests']
       
       net_cidr = {
-          'public': "172.18.122.96/28"
+          'public': "172.18.122.96/28",
+          'net04_ext': "10.16.122.0/24",
       }
       net_ip_ranges = {
           'public': [
@@ -43,9 +44,9 @@ class environment:
                   "172.18.122.107"
               ]
            ],
-           'net04_ext': [
-                  "172.18.122.109",
-                  "172.18.122.110"
-           ],
+#           'net04_ext': [
+#                  "172.18.122.109",
+#                  "172.18.122.110"
+#           ],
       }
       gateway = None

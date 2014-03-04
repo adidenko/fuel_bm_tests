@@ -1,6 +1,6 @@
 class environment:
       data = {
-        "release": 3,
+        "release": 2,
         "mode": "multinode"
       }
       interfaces = {
