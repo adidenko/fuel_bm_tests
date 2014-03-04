@@ -49,3 +49,4 @@ class environment:
            ],
       }
       gateway = None
+      nameservers = None
