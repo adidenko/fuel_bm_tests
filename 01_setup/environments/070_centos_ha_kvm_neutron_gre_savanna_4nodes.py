@@ -35,3 +35,5 @@ class environment:
       net_cidr = {}
       net_ip_ranges = {}
       gateway = None
+      bond_slaves = None
+      nameservers = None

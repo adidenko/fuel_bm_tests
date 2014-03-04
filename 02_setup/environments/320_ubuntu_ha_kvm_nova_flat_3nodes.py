@@ -48,3 +48,4 @@ class environment:
       }
       gateway = None
       nameservers = None
+      bond_slaves = None
