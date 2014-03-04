@@ -1,5 +1,5 @@
---- fuel_bmtests/ks.cfg	2014-02-21 05:13:56.000000000 -0500
-+++ ks_bmtests.cfg	2014-02-21 06:28:13.572253957 -0500
+--- fuel_bmtests/ks.cfg	2014-03-04 03:50:41.000000000 -0500
++++ ks_bmtests.cfg	2014-03-04 11:51:34.188252527 -0500
 @@ -31,7 +31,7 @@
  
  set ${drives}
@@ -9,16 +9,17 @@
  if [ ${numdrives} -gt 1 ]; then
      exec < /dev/tty3 > /dev/tty3 2>&1
      chvt 3
-@@ -241,6 +241,8 @@
+@@ -241,6 +241,9 @@
      fi
  }
  
++echo -e "DEVICE=eth0:1\nBOOTPROTO=static\nIPADDR=10.16.122.1\nNETMASK=255.255.255.0\n" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
 +echo -e "DEVICE=eth1\nBOOTPROTO=static\nIPADDR=192.168.50.1\nNETMASK=255.255.255.0\n" > /etc/sysconfig/network-scripts/ifcfg-eth1
 +
  # Default FQDN
  hostname="nailgun.mirantis.com"
  
-@@ -332,6 +334,12 @@
+@@ -332,6 +335,12 @@
  chmod 0777 /usr/local/sbin/bootstrap_admin_node.sh
  cp ${SOURCE}/bootstrap_admin_node.conf /etc/init/bootstrap_admin_node.conf
  echo "ENABLED=1" > /etc/sysconfig/bootstrap_admin_node
@@ -31,16 +32,16 @@
  
  # Copying version.yaml file. It contains COMMIT_SHA of last commit.
  mkdir -p /etc/nailgun
-@@ -365,6 +373,8 @@
+@@ -365,6 +374,8 @@
  EOF
  
  echo "sed -i \"s%\(^.*able on:\).*$%\1 http://\`ip address show eth0 | awk '/inet / {print \$2}' | cut -d/ -f1 -\`:8000%\" /etc/issue" >>/etc/rc.local
 +echo >> /etc/rc.local
-+echo "#iptables -t nat -I POSTROUTING -s 172.16.0.0/24 -j MASQUERADE" >> /etc/rc.local
++echo "iptables -t nat -I POSTROUTING -s 10.16.122.0/24 -j MASQUERADE" >> /etc/rc.local
  
  # Unmounting source
  umount -f ${SOURCE}
-@@ -401,4 +411,4 @@
+@@ -401,4 +412,4 @@
  # Blacklist i2c_piix4 module for VirtualBox so it does not create kernel errors
  [[ $(virt-what) = "virtualbox" ]] && echo "blacklist i2c_piix4" > /etc/modprobe.d/blacklist-i2c-piix4.conf
  

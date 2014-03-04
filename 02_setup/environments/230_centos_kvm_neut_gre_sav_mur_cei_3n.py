@@ -34,19 +34,9 @@ class environment:
       ostf_test_sets = ['smoke', 'sanity', 'platform_tests']
       
       net_cidr = {
-          'public': "172.18.122.96/28"
+          'public': "10.16.122.0/24",
       }
       net_ip_ranges = {
-          'public': [
-              [   
-                  "172.18.122.105",
-                  "172.18.122.107"
-              ]
-           ],
-           'net04_ext': [
-                  "172.18.122.109",
-                  "172.18.122.110"
-           ],
       }
       gateway = None
       nameservers = None
