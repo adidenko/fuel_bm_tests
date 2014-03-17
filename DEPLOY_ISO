@@ -33,7 +33,7 @@ else
 fi
 
 echo "Preparing PXE and rebooting Fuel master node"
-$BASE/setup_pxe_for_iso.sh "$ISO" &>/dev/null && \
+$BASE/setup_pxe_for_iso.sh "$ISO" && \
 $BASE/deploy_fuel_master_node.sh || exit 1
 
 sleep 10

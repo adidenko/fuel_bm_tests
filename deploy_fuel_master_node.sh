@@ -44,7 +44,7 @@ ipmitool -H $IPMI -U $USER -P $PASS chassis bootdev pxe
 
 cp $PXESRC $PXECFG
 $BASE/reboot_fuel.sh y
-sleep 180 && ipmitool -H $IPMI -U $USER -P $PASS chassis bootdev disk &>/dev/null &
+sleep 180 && ipmitool -H $IPMI -U $USER -P $PASS chassis bootdev disk &
 sleep 180 &&  cp $BASE/pxelinux.bootlocal $PXECFG &
 
 echo DONE
