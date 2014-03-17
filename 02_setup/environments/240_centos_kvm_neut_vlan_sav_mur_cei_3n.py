@@ -30,7 +30,7 @@ class environment:
         "neutron_vlan_range": [ 475, 479 ],
         "libvirt_type": "kvm"
       }
-      ostf_should_fail = 8
+      ostf_should_fail = 9
       ostf_timeout = 6 * 60 * 60
       ostf_test_sets = ['smoke', 'sanity', 'platform_tests']
       
