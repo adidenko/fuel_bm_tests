@@ -198,6 +198,15 @@ EOF
 		cat $HTML >> ./RESULT.html
 		echo '<br>' >> ./RESULT.html
 	fi
-	grep -q 'ERROR' $LOG && PT_RES="FAILED" || PT_RES="PASSED"
+	# check result
+	if egrep -q 'deployment|OSTF result|network verification' $LOG ; then
+        	if grep -q 'ERROR' $LOG ; then
+			PT_RES="FAILED"
+		else
+			PT_RES="PASSED"
+		fi
+	else
+		PT_RES="FAILED"
+	fi
 	echo "$env_name - $PT_RES" >> ./SUMMARY.txt
 done
