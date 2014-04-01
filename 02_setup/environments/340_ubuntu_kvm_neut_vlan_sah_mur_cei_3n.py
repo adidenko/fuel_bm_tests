@@ -4,14 +4,14 @@ class environment:
         "mode": "multinode"
       }
       interfaces = {
-        'eth0': ["public", "storage", "management", "private"],
-        'eth1': ["fuelweb_admin"]
+        'eth0': ["public", "storage", "management"],
+        'eth1': ["fuelweb_admin", "private"]
       }
       special_roles = {}
       node_roles = [
-        ['controller', 'ceph-osd'],
-        ['cinder', 'ceph-osd'],
-        ['compute', 'ceph-osd']
+        ['controller'],
+        ['cinder'],
+        ['compute']
       ]
       net_tag = {
          'management': 471,
@@ -19,17 +19,18 @@ class environment:
       }
       deploy_timeout = 120 * 60
       settings = {
-        "volumes_lvm": False,
-        "volumes_ceph": True,
-        "images_ceph": True,
+        "volumes_lvm": True,
+        "volumes_ceph": False,
+        "images_ceph": False,
         "murano": True,
-        "savanna": True,
+        "sahara": True,
         "ceilometer": True,
         "net_provider": 'neutron',
-        "net_segment_type": 'gre',
+        "net_segment_type": 'vlan',
+        "neutron_vlan_range": [ 475, 479 ],
         "libvirt_type": "kvm"
       }
-      ostf_should_fail = 8
+      ostf_should_fail = 9
       ostf_timeout = 6 * 60 * 60
       ostf_test_sets = ['smoke', 'sanity', 'platform_tests']
       

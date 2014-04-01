@@ -23,7 +23,7 @@ class environment:
       }
       deploy_timeout = 180 * 60
       settings = {
-        "savanna": True,
+        "sahara": True,
         "murano": True,
         "ceilometer": True,
         "volumes_lvm": True,

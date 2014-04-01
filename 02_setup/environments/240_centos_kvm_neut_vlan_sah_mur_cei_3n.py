@@ -1,6 +1,6 @@
 class environment:
       data = {
-        "release": 2,
+        "release": 1,
         "mode": "multinode"
       }
       interfaces = {
@@ -23,7 +23,7 @@ class environment:
         "volumes_ceph": False,
         "images_ceph": False,
         "murano": True,
-        "savanna": True,
+        "sahara": True,
         "ceilometer": True,
         "net_provider": 'neutron',
         "net_segment_type": 'vlan',

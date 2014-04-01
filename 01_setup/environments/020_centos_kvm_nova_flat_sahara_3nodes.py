@@ -23,7 +23,7 @@ class environment:
       deploy_timeout = 120 * 60
       settings = {
         "volumes_lvm": True,
-	"savanna": True,
+	"sahara": True,
         "libvirt_type": "kvm"
       }
       ostf_should_fail = 2

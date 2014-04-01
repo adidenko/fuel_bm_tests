@@ -9,9 +9,9 @@ class environment:
       }
       special_roles = {}
       node_roles = [
-        ['controller', 'ceph-osd'],
-        ['cinder', 'ceph-osd'],
-        ['compute', 'ceph-osd']
+        ['controller'],
+        ['cinder'],
+        ['compute']
       ]
       net_tag = {
          'management': 471,
@@ -19,17 +19,17 @@ class environment:
       }
       deploy_timeout = 120 * 60
       settings = {
-        "volumes_lvm": False,
-        "volumes_ceph": True,
-        "images_ceph": True,
+        "volumes_lvm": True,
+        "volumes_ceph": False,
+        "images_ceph": False,
         "murano": True,
-        "savanna": True,
+        "sahara": True,
         "ceilometer": True,
         "net_provider": 'neutron',
         "net_segment_type": 'gre',
         "libvirt_type": "kvm"
       }
-      ostf_should_fail = 8
+      ostf_should_fail = 9
       ostf_timeout = 6 * 60 * 60
       ostf_test_sets = ['smoke', 'sanity', 'platform_tests']
       

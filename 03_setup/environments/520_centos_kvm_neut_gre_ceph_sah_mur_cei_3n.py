@@ -24,7 +24,7 @@ class environment:
         "volumes_ceph": True,
         "images_ceph": True,
         "murano": True,
-        "savanna": True,
+        "sahara": True,
         "ceilometer": True,
         "net_provider": 'neutron',
         "net_segment_type": 'gre',

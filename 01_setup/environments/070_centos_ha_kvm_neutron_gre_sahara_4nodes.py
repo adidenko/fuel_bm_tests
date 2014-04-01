@@ -23,7 +23,7 @@ class environment:
       }
       deploy_timeout = 180 * 60
       settings = {
-        "savanna": True,
+        "sahara": True,
         "volumes_lvm": True,
         "net_provider": 'neutron',
         "net_segment_type": 'gre',

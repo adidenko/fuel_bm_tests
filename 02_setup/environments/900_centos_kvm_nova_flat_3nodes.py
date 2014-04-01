@@ -4,7 +4,7 @@ class environment:
         "mode": "multinode"
       }
       interfaces = {
-        'eth0': ["public", "storage", "management", "private"],
+        'eth0': ["public", "floating", "storage", "management", "fixed"],
         'eth1': ["fuelweb_admin"]
       }
       special_roles = {}
@@ -15,28 +15,36 @@ class environment:
       ]
       net_tag = {
          'management': 471,
-         'storage': 472
+         'storage': 472,
+         'fixed': 473,
       }
       deploy_timeout = 120 * 60
       settings = {
         "volumes_lvm": True,
-        "volumes_ceph": False,
-        "images_ceph": False,
-        "murano": True,
-        "savanna": True,
-        "ceilometer": True,
-        "net_provider": 'neutron',
-        "net_segment_type": 'gre',
         "libvirt_type": "kvm"
       }
-      ostf_should_fail = 9
-      ostf_timeout = 6 * 60 * 60
+      ostf_should_fail = 1
+      ostf_timeout = 20 * 60
       ostf_test_sets = ['smoke', 'sanity', 'platform_tests']
       
       net_cidr = {
-          'public': "10.16.122.0/24",
+          'public': "172.18.121.96/28",
+          'floating': "172.18.121.96/28",
       }
       net_ip_ranges = {
+          'public': [
+              [   
+                  "172.18.121.105",
+                  "172.18.121.107",
+              ]
+          ],
+           'floating': [
+              [   
+
+                  "172.18.121.109",
+                  "172.18.121.110",
+              ]   
+           ],
       }
       gateway = None
       nameservers = None
