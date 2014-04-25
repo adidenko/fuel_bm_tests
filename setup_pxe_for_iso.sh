@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 ISO="$1"
 HOW="$2"
 MNT='/tmp/fuel_auto_iso_tmp'
@@ -93,5 +96,5 @@ esac
 #############
 rm -f "$KS_CFG"
 cp "$TFTP_BASE/ks.cfg" "$KS_CFG" 
-patch -p1 "$KS_CFG" < $KS_DIFF || exit 1
+patch -p1 "$KS_CFG" < $KS_DIFF
 echo "DONE"

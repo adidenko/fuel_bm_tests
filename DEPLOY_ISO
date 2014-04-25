@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 res1=`date +%s`
 URL="$1"
 
@@ -34,7 +37,7 @@ fi
 
 echo "Preparing PXE and rebooting Fuel master node"
 $BASE/setup_pxe_for_iso.sh "$ISO" && \
-$BASE/deploy_fuel_master_node.sh || exit 1
+$BASE/deploy_fuel_master_node.sh
 
 sleep 10
 
