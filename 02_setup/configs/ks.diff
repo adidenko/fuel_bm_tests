@@ -41,10 +41,3 @@
  
  # Unmounting source
  umount -f ${SOURCE}
-@@ -406,4 +417,4 @@
- # Blacklist i2c_piix4 module for VirtualBox so it does not create kernel errors
- [[ $(virt-what) = "virtualbox" ]] && echo "blacklist i2c_piix4" > /etc/modprobe.d/blacklist-i2c-piix4.conf
- 
--%end
-\ No newline at end of file
-+%end
