@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-set -x
 
 ISO="$1"
 HOW="$2"
