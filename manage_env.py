@@ -281,14 +281,21 @@ def setup_env(admin_node_ip, env_name):
 
   for option in env.settings:
     section = False
-    if option in ('savanna', 'murano', 'ceilometer'):
+    if option in ('sahara', 'murano', 'ceilometer'):
       section = 'additional_components'
     if option in ('volumes_ceph', 'images_ceph', 'volumes_lvm'):
       section = 'storage'
     if option in ('libvirt_type', 'vlan_splinters'):
       section = 'common'
+    if option in ('kernel'):
+      section = 'kernel_params'
     if section:
       attributes['editable'][section][option]['value'] = env.settings[option]
+
+  if "additional_kernel_params" in env.settings:
+    if env.settings["additional_kernel_params"]:
+      attributes['editable']['kernel_params']['kernel']['value'] += " "
+      attributes['editable']['kernel_params']['kernel']['value'] += env.settings["additional_kernel_params"]
 
   attributes['editable']['common']['debug']['value'] = True
   client.update_cluster_attributes(cluster_id, attributes)

@@ -21,7 +21,8 @@ class environment:
       deploy_timeout = 180 * 60
       settings = {
         "volumes_lvm": True,
-        "libvirt_type": "kvm"
+        "libvirt_type": "kvm",
+        "additional_kernel_params": "ipmi_si.tryacpi=0 ipmi_si.trydmi=0 ipmi_si.trydefaults=0"
       }
       ostf_should_fail = 1
       ostf_timeout = 40 * 60

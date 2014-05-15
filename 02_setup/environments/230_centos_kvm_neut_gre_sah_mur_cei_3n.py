@@ -4,7 +4,7 @@ class environment:
         "mode": "multinode"
       }
       interfaces = {
-        'eth0': ["public", "storage", "management", "private"],
+        'eth0': ["public", "storage", "management"],
         'eth1': ["fuelweb_admin"]
       }
       special_roles = {}
@@ -27,7 +27,8 @@ class environment:
         "ceilometer": True,
         "net_provider": 'neutron',
         "net_segment_type": 'gre',
-        "libvirt_type": "kvm"
+        "libvirt_type": "kvm",
+        "additional_kernel_params": "ipmi_si.tryacpi=0 ipmi_si.trydmi=0 ipmi_si.trydefaults=0"
       }
       ostf_should_fail = 9
       ostf_timeout = 6 * 60 * 60

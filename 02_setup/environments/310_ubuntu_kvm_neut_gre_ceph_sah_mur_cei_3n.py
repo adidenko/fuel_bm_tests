@@ -4,7 +4,7 @@ class environment:
         "mode": "multinode"
       }
       interfaces = {
-        'eth0': ["public", "storage", "management", "private"],
+        'eth0': ["public", "storage", "management"],
         'eth1': ["fuelweb_admin"]
       }
       special_roles = {}

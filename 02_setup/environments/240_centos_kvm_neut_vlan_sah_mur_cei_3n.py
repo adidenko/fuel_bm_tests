@@ -28,7 +28,8 @@ class environment:
         "net_provider": 'neutron',
         "net_segment_type": 'vlan',
         "neutron_vlan_range": [ 475, 479 ],
-        "libvirt_type": "kvm"
+        "libvirt_type": "kvm",
+        "additional_kernel_params": "ipmi_si.tryacpi=0 ipmi_si.trydmi=0 ipmi_si.trydefaults=0"
       }
       ostf_should_fail = 9
       ostf_timeout = 6 * 60 * 60
