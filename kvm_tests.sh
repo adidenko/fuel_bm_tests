@@ -44,7 +44,7 @@ DISCOVERED_NODES=`curl -s -X GET http://$FUEL_MASTER_NODE:8000/api/nodes | pytho
 if [ "$DISCOVERED_NODES" != "$TOTAL_OS_NODES" ] ; then
 	echo -n "Discovered nodes: $DISCOVERED_NODES, but should be $TOTAL_OS_NODES. Rebooting nodes ."
 	wipe_nodes &>/dev/null
-	for i in {1..30} ; do
+	for i in {1..60} ; do
 		DISCOVERED_NODES=`curl -s -X GET http://$FUEL_MASTER_NODE:8000/api/nodes | python -mjson.tool | grep discover | wc -l`
 		if [ "$DISCOVERED_NODES" != "$TOTAL_OS_NODES" ] ; then
 			echo -n "."
