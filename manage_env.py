@@ -249,29 +249,29 @@ def setup_env(admin_node_ip, env_name):
 
   network_conf['networks'] = network_list
 
+  if env.nameservers:
+    network_conf['networking_parameters']['dns_nameservers'] = env.nameservers
+
   # update neutron settings
   if "net_provider" in env.settings:
     if env.settings["net_provider"] == 'neutron':
       # check if we need to set vlan tags
       if env.settings["net_segment_type"] == 'vlan' and 'neutron_vlan_range' in env.settings:
-        network_conf['neutron_parameters']['L2']['phys_nets']['physnet2']['vlan_range'] = env.settings['neutron_vlan_range']
+        network_conf['networking_parameters']['vlan_range'] = env.settings['neutron_vlan_range']
       # check and update networks CIDR/netmask/size/etc
       if 'private' in env.net_cidr:
-        network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['cidr'] = env.net_cidr['private']
-        network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['gateway'] = str(list(IPNetwork(env.net_cidr['private']))[1])
-      if env.nameservers:
-        if 'private' in env.nameservers:
-          network_conf['neutron_parameters']['predefined_networks']['net04']['L3']['nameservers'] = env.nameservers['private']
+        network_conf['networking_parameters']['internal_cidr'] = env.net_cidr['private']
+        network_conf['networking_parameters']['internal_gateway'] = str(list(IPNetwork(env.net_cidr['private']))[1])
       if 'public' in env.net_cidr:
-        network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['cidr'] = env.net_cidr['public']
-        if env.gateway:
-          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = env.gateway
+#        network_conf['networking_parameters']['cidr'] = env.net_cidr['public']
+#        if env.gateway:
+#          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = env.gateway
+#        else:
+#          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = str(list(IPNetwork(env.net_cidr['public']))[1])
+        if 'public' in env.net_ip_ranges:
+          network_conf['networking_parameters']['floating_ranges'] = env.net_ip_ranges["public"]
         else:
-          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = str(list(IPNetwork(env.net_cidr['public']))[1])
-        if 'net04_ext' in env.net_ip_ranges:
-          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['floating'] = env.net_ip_ranges["net04_ext"]
-        else:
-          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['floating'] = get_range(env.net_cidr['public'], 2)
+          network_conf['networking_parameters']['floating_ranges'] = get_range(env.net_cidr['public'], 1)
 
   # push updated network to Fuel API
   client.update_network(cluster_id, networks=network_conf, all_set=True)
