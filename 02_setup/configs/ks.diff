@@ -13,8 +13,8 @@
      fi
  }
  
-+echo -e "DEVICE=eth0:1\nBOOTPROTO=static\nIPADDR=10.16.122.1\nNETMASK=255.255.255.0\n" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
-+echo -e "DEVICE=eth1\nBOOTPROTO=static\nIPADDR=192.168.50.1\nNETMASK=255.255.255.0\n" > /etc/sysconfig/network-scripts/ifcfg-eth1
++echo -e "DEVICE=eth0:1\nBOOTPROTO=static\nONBOOT=yes\nIPADDR=10.16.122.1\nNETMASK=255.255.255.0\n" > /etc/sysconfig/network-scripts/ifcfg-eth0:1
++echo -e "DEVICE=eth1\nBOOTPROTO=static\nONBOOT=yes\nIPADDR=192.168.50.1\nNETMASK=255.255.255.0\n" > /etc/sysconfig/network-scripts/ifcfg-eth1
 +
  # Default FQDN
  hostname="nailgun.mirantis.com"
