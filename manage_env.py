@@ -262,16 +262,20 @@ def setup_env(admin_node_ip, env_name):
       if 'private' in env.net_cidr:
         network_conf['networking_parameters']['internal_cidr'] = env.net_cidr['private']
         network_conf['networking_parameters']['internal_gateway'] = str(list(IPNetwork(env.net_cidr['private']))[1])
-      if 'public' in env.net_cidr:
-#        network_conf['networking_parameters']['cidr'] = env.net_cidr['public']
-#        if env.gateway:
-#          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = env.gateway
-#        else:
-#          network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = str(list(IPNetwork(env.net_cidr['public']))[1])
-        if 'public' in env.net_ip_ranges:
-          network_conf['networking_parameters']['floating_ranges'] = env.net_ip_ranges["public"]
-        else:
-          network_conf['networking_parameters']['floating_ranges'] = get_range(env.net_cidr['public'], 1)
+
+  if 'public' in env.net_cidr:
+#   network_conf['networking_parameters']['cidr'] = env.net_cidr['public']
+#   if env.gateway:
+#     network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = env.gateway
+#   else:
+#     network_conf['neutron_parameters']['predefined_networks']['net04_ext']['L3']['gateway'] = str(list(IPNetwork(env.net_cidr['public']))[1])
+    if 'floating' in env.net_ip_ranges:
+      network_conf['networking_parameters']['floating_ranges'] = env.net_ip_ranges["floating"]
+    else:
+      network_conf['networking_parameters']['floating_ranges'] = get_range(env.net_cidr['public'], 1)
+
+  if 'fixed' in env.net_tag:
+    network_conf['networking_parameters']['fixed_networks_vlan_start'] = env.net_tag["fixed"]
 
   # push updated network to Fuel API
   client.update_network(cluster_id, networks=network_conf, all_set=True)
