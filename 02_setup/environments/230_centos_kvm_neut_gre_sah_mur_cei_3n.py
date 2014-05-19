@@ -10,7 +10,7 @@ class environment:
       special_roles = {}
       node_roles = [
         ['controller'],
-        ['cinder'],
+        ['cinder', 'mongo'],
         ['compute']
       ]
       net_tag = {
