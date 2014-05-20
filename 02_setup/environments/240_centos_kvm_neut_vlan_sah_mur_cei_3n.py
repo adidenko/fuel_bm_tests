@@ -31,7 +31,7 @@ class environment:
         "libvirt_type": "kvm",
         "additional_kernel_params": "ipmi_si.tryacpi=0 ipmi_si.trydmi=0 ipmi_si.trydefaults=0"
       }
-      ostf_should_fail = 9
+      ostf_should_fail = 4
       ostf_timeout = 6 * 60 * 60
       ostf_test_sets = ['smoke', 'sanity', 'platform_tests']
       
