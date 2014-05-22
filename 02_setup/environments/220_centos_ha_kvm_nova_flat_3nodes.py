@@ -9,9 +9,9 @@ class environment:
       }
       special_roles = {}
       node_roles = [
-        ['controller', 'cinder'],
-        ['controller', 'cinder'],
-        ['controller', 'cinder']
+        ['controller'],
+        ['controller'],
+        ['controller']
       ]
       net_tag = {
          'management': 471,
