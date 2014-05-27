@@ -7,10 +7,11 @@ class environment:
         'eth0': ["public", "storage", "management"],
         'eth1': ["fuelweb_admin"]
       }
-      special_roles = {}
+      special_roles = {
+        '00:26:6c:f2:dc:41': ['mongo'],
+      }
       node_roles = [
         ['controller', 'ceph-osd'],
-        ['mongo'],
         ['compute', 'ceph-osd']
       ]
       net_tag = {
