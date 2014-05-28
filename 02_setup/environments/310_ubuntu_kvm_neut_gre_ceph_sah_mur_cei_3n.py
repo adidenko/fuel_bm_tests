@@ -8,11 +8,12 @@ class environment:
         'eth1': ["fuelweb_admin"]
       }
       special_roles = {
-        '00:26:6c:f2:db:35': ['mongo'],
-        '00:26:6c:f2:dc:41': ['controller', 'ceph-osd'],
-        '00:26:6c:f2:df:9d': ['compute', 'ceph-osd'],
+        '00:26:6c:f2:dc:41': ['mongo'],
       }
-      node_roles = []
+      node_roles = [
+        ['controller', 'ceph-osd'],
+        ['compute', 'ceph-osd']
+      ]
       net_tag = {
          'management': 471,
          'storage': 472
