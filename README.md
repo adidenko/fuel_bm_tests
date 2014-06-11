@@ -37,7 +37,7 @@ cd fuel_bm_tests
 
 # create your env file
 mkdir /tmp/myenvs
-cp 01_setup/environments/010_centos_kvm_nova_flat_3nodes.py /tmp/myenvs/myenv01.py
+cp 02_setup/environments/200_centos_kvm_nova_flat_3nodes.py /tmp/myenvs/myenv01.py
 
 # customize env file
 vim /tmp/myenvs/myenv01.py
