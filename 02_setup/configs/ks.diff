@@ -1,14 +1,5 @@
 --- /var/lib/tftpboot/fuel_bmtests/ks.cfg	2014-03-14 06:09:51.000000000 -0400
 +++ /var/lib/tftpboot/ks_bmtests.cfg	2014-03-17 04:17:52.472254353 -0400
-@@ -29,7 +29,7 @@
-     fi
- done
- 
--installdrive="undefined"
-+installdrive="sda"
- for I in `cat /proc/cmdline`; do case "$I" in *=*) eval $I;; esac ; done
- 
- set ${drives}
 @@ -246,6 +246,9 @@
      fi
  }
