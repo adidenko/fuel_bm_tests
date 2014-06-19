@@ -14,5 +14,5 @@ LABEL fuelbmtests
   MENU default
   KERNEL /fuel_bmtests/isolinux/vmlinuz
   INITRD /fuel_bmtests/isolinux/initrd.img
-  APPEND ks=nfs:172.18.122.108:/var/lib/tftpboot/ks_bmtests.cfg repo=nfs:172.18.122.108:/var/lib/tftpboot/fuel_bmtests ksdevice=eth0 ip=172.18.122.104 netmask=255.255.255.240 gw=172.18.122.97 dns1=172.18.80.136 hostname=fmdell.local.int showmenu=no biosdevname=0 installdrive=sda
+  APPEND ks=nfs:172.18.122.108:/var/lib/tftpboot/ks_bmtests.cfg repo=nfs:172.18.122.108:/var/lib/tftpboot/fuel_bmtests ksdevice=eth0 ip=172.18.122.104 netmask=255.255.255.240 gw=172.18.122.97 dns1=172.18.80.136 hostname=fmdell.local.int showmenu=no biosdevname=0 installdrive=sda forceformat=yes
 
