@@ -5,7 +5,7 @@ class environment:
       }
       interfaces = {
         'eth0': ["public", "storage", "management"],
-        'eth1': ["fuelweb_admin", "private"]
+        'eth1': ["fuelweb_admin"]
       }
       special_roles = {}
       node_roles = [
