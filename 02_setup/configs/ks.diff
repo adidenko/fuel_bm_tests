@@ -1,6 +1,6 @@
---- /var/lib/tftpboot/fuel_bmtests/ks.cfg	2014-03-14 06:09:51.000000000 -0400
-+++ /var/lib/tftpboot/ks_bmtests.cfg	2014-03-17 04:17:52.472254353 -0400
-@@ -246,6 +246,9 @@
+--- ks_bmtests.cfg.orig	2014-09-10 13:06:43.524253992 -0400
++++ ks_bmtests.cfg	2014-09-11 11:30:54.412254138 -0400
+@@ -342,6 +342,9 @@
      fi
  }
  
@@ -10,7 +10,7 @@
  # Default FQDN
  hostname="nailgun.mirantis.com"
  
-@@ -337,6 +340,12 @@
+@@ -433,6 +436,12 @@
  chmod 0777 /usr/local/sbin/bootstrap_admin_node.sh
  cp ${SOURCE}/bootstrap_admin_node.conf /etc/init/bootstrap_admin_node.conf
  echo "ENABLED=1" > /etc/sysconfig/bootstrap_admin_node
@@ -22,13 +22,20 @@
 +EOF
  
  # Copying version.yaml file. It contains COMMIT_SHA of last commit.
- mkdir -p /etc/nailgun
-@@ -370,6 +379,8 @@
+ RELEASE=$(awk '/release/{gsub(/"/, "");print $2}' ${SOURCE}/version.yaml)
+@@ -498,6 +507,8 @@
+ 
  EOF
  
- echo "sed -i \"s%\(^.*able on:\).*$%\1 http://\`ip address show eth0 | awk '/inet / {print \$2}' | cut -d/ -f1 -\`:8000%\" /etc/issue" >>/etc/rc.local
 +echo >> /etc/rc.local
 +echo "iptables -t nat -I POSTROUTING -s 10.16.122.0/24 -j MASQUERADE" >> /etc/rc.local
  
  # Unmounting source
  umount -f ${SOURCE}
+@@ -531,4 +542,4 @@
+ # Blacklist i2c_piix4 module for VirtualBox so it does not create kernel errors
+ [[ $(virt-what) = "virtualbox" ]] && echo "blacklist i2c_piix4" > /etc/modprobe.d/blacklist-i2c-piix4.conf
+ 
+-%end
+\ No newline at end of file
++%end
