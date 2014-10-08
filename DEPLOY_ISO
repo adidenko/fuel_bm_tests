@@ -17,7 +17,7 @@ fi
 
 if [ "$BMTEST_PXE_BOOT_FUEL_NODE" == "" ] ; then
         PXESRC="$BASE/pxelinux.bootpxe"
-else   
+else
         PXESRC="$BMTEST_PXE_BOOT_FUEL_NODE"
 fi
 
